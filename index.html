@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AUTOMA-REDAÇÃO – Apresentação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        overflow: hidden;
+      }
+
+      .slide {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.6s ease, transform 0.5s ease;
+        transform: translateY(30px);
+        min-height: 70vh;
+      }
+      .slide.active {
+        display: flex;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hover-zoom:hover {
+        transform: scale(1.05);
+      }
+
+      .hover-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .fade-in {
+        animation: fadeIn 0.8s ease forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .black-screen {
+        background: #000;
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 text-gray-800 flex flex-col h-screen">
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8">
+      <div id="presentation-container" class="w-full max-w-5xl"></div>
+    </main>
+
+    <!-- Navegação -->
+    <footer class="w-full bg-white border-t border-gray-200 p-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="flex items-center justify-between mb-2">
+          <span
+            id="slide-counter"
+            class="text-sm font-medium text-gray-500"
+          ></span>
+
+          <div class="flex space-x-4">
+            <button
+              id="prev-btn"
+              class="nav-button bg-green-600 rounded-full p-3 text-white shadow-lg hover:bg-green-700 hover:scale-110 transition"
+            >
+              ◀
+            </button>
+
+            <button
+              id="next-btn"
+              class="nav-button bg-green-600 rounded-full p-3 text-white shadow-lg hover:bg-green-700 hover:scale-110 transition"
+            >
+              ▶
+            </button>
+          </div>
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-2.5">
+          <div
+            id="progress-bar"
+            class="bg-green-500 h-2.5 rounded-full"
+            style="width: 0%"
+          ></div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const container = document.getElementById("presentation-container");
+      const counter = document.getElementById("slide-counter");
+      const bar = document.getElementById("progress-bar");
+      let current = 0;
+
+      const slides = [
+        /* ---------------- SLIDE 1 — TÍTULO ---------------- */
+        `
+<div class="slide-content text-center fade-in">
+    <h1 class="text-5xl md:text-7xl font-extrabold text-gray-900 mb-4">
+        AUTOMA-REDAÇÃO 🤖✍️
+    </h1>
+    <p class="text-2xl md:text-3xl text-green-600">Automatizando o Processo de Redação</p>
+    <p class="text-xl text-gray-600 mt-8">
+        Desenvolvido por: <strong>Vitor Moreira</strong> & <strong>Carlos Eduardo</strong>  
+        <br> Orientador: Prof. Adriel Batista
+    </p>
+    <img src="foto1.png" class="w-72 mx-auto mt-6 rounded-xl shadow-lg hover-zoom transition">
+</div>
+`,
+
+        /* ---------------- SLIDE 2 — PROBLEMA ---------------- */
+        `
+<div class="slide-content fade-in w-full">
+    <h2 class="text-4xl font-bold mb-6 text-green-700">📌 O Problema Identificado</h2>
+
+    <div class="bg-white p-6 rounded-xl shadow-md hover-card transition">
+        <p class="text-xl leading-relaxed">
+            Nas aulas de Redação e Leitura, os alunos tinham um processo lento:
+            primeiro escreviam no papel, depois precisavam ir até a Sala do Futuro
+            para digitar tudo novamente manualmente.
+        </p>
+    </div>
+
+    <img src="foto2.png" class="w-96 mx-auto mt-6 rounded-xl shadow-lg hover-zoom transition">
+</div>
+`,
+
+        /* ---------------- SLIDE 3 — SOLUÇÃO ---------------- */
+        `
+<div class="slide-content fade-in w-full">
+    <h2 class="text-4xl font-bold mb-6 text-green-700">🚀 Nossa Solução</h2>
+
+    <p class="text-xl mb-6">
+        Criamos uma ferramenta capaz de <strong>automatizar a digitação</strong>,
+        transformando minutos de trabalho repetitivo em apenas segundos.
+    </p>
+
+    <img src="foto3.png" class="w-96 mx-auto rounded-xl shadow-lg hover-zoom transition">
+</div>
+`,
+
+        /* ---------------- SLIDE 4 — TECNOLOGIAS ---------------- */
+        `
+<div class="slide-content fade-in w-full">
+    <h2 class="text-4xl font-bold mb-6 text-green-700">🛠 Tecnologias Utilizadas</h2>
+
+    <ul class="space-y-4 text-xl">
+        <li>✨ <strong>Playwright</strong> — Automação total do navegador</li>
+        <li>🖱 <strong>PyAutoGUI</strong> — Controle de mouse/teclado</li>
+        <li>🎨 <strong>CustomTkinter</strong> — Interface moderna</li>
+        <li>🔔 <strong>WiNotify</strong> — Notificações do Windows</li>
+    </ul>
+
+    <img src="foto4.png" class="w-80 mx-auto mt-6 rounded-xl shadow-lg hover-zoom transition">
+</div>
+`,
+
+        /* ---------------- SLIDE 5 — COMO FUNCIONA ---------------- */
+        `
+<div class="slide-content fade-in w-full">
+    <h2 class="text-4xl font-bold mb-6 text-green-700">⚙️ Como Funciona</h2>
+
+    <ol class="list-decimal text-xl ml-6 space-y-3">
+        <li>O aluno escreve normalmente no papel</li>
+        <li>Escaneia com Google Lens 📱</li>
+        <li>Copia para o PC via área de transferência</li>
+        <li>Executa o AUTOMA-REDAÇÃO</li>
+        <li>O sistema automatiza todo o processo</li>
+    </ol>
+
+    <img src="foto5.png" class="w-96 mx-auto mt-6 rounded-xl shadow-lg hover-zoom transition">
+</div>
+`,
+
+        /* ---------------- SLIDE 6 — AUTOMAÇÃO INTELIGENTE ---------------- */
+        `
+<div class="slide-content fade-in w-full">
+    <h2 class="text-4xl font-bold text-green-700 mb-4">🤖 Automação Inteligente</h2>
+
+    <p class="text-xl mb-4">
+        O sistema faz login automaticamente, abre a página certa,
+        escolhe a redação e cola o texto sozinho.
+    </p>
+
+    <img src="foto6.png" class="w-96 mx-auto mt-6 rounded-xl shadow-lg hover-zoom transition">
+</div>
+`,
+
+        /* ---------------- SLIDE 7 — CONCLUSÃO ---------------- */
+        `
+<div class="slide-content fade-in text-center w-full">
+    <h2 class="text-4xl font-bold text-green-700 mb-6">🏁 Conclusão</h2>
+    <p class="text-xl mb-4">Um projeto que trouxe mais agilidade, acessibilidade e eficiência.</p>
+</div>
+`,
+
+        /* ---------------- SLIDE 8 — TELA PRETA (FINAL) ---------------- */
+        `
+<div class="slide-content black-screen flex flex-col items-center justify-center text-center fade-in">
+    <h1 class="text-5xl font-extrabold mb-8">🔗 Acessar o README</h1>
+
+    <a href="https://github.com/VitorMoreira2344/Automa-oREDACAO?tab=readme-ov-file#automa%C3%A7%C3%A3o-de-login---sala-do-futuro-playwright"
+       target="_blank"
+       class="text-2xl bg-white text-black px-6 py-4 rounded-xl hover:bg-gray-300 hover:scale-110 transition font-bold">
+        Abrir no GitHub
+    </a>
+</div>
+`,
+      ];
+
+      /* --------- FUNÇÕES --------- */
+      function update() {
+        counter.textContent = `Slide ${current + 1} de ${slides.length}`;
+        bar.style.width = ((current + 1) / slides.length) * 100 + "%";
+
+        container.innerHTML = `<div class="slide active flex-col items-center justify-center">${slides[current]}</div>`;
+      }
+
+      document.getElementById("next-btn").onclick = () => {
+        if (current < slides.length - 1) current++;
+        update();
+      };
+
+      document.getElementById("prev-btn").onclick = () => {
+        if (current > 0) current--;
+        update();
+      };
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          if (current < slides.length - 1) current++, update();
+        }
+        if (e.key === "ArrowLeft") {
+          if (current > 0) current--, update();
+        }
+      });
+
+      update();
+    </script>
+  </body>
+</html>
